@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser")
-const UserRoute = require("./routers/user.routes");
+const UserRoute = require("./Routes/user.routes");
 
 const cors = require('cors');
 
@@ -13,6 +13,7 @@ const corsOptions = {
     optionsSuccessStatus: 204, 
   };
   app.use(cors(corsOptions));
+  app.use(express.json());
 
 app.use(express.json());
 app.use("/api",UserRoute);
