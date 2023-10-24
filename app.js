@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const UserRoute = require("./Routes/user.routes");
+const courseRoutes = require("./Routes/courseregistration.routes");
 
 const cors = require('cors');
 
@@ -17,4 +18,5 @@ const corsOptions = {
 
 app.use(express.json());
 app.use("/api",UserRoute);
+app.use('/api', courseRoutes);
 module.exports = app;
