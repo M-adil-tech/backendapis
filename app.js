@@ -1,20 +1,23 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const UserRoute = require("./Routes/user.routes");
+const courseRoute = require("./Routes/course.register");
+
 
 const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.json());
-const corsOptions = {
-    origin: 'http://localhost:3000',
+const corsOptions = { 
+    origin: '*',
     methods: 'GET,PUT,POST,DELETE',
-    optionsSuccessStatus: 204, 
+    optionsSuccessStatus: 200, 
   };
   app.use(cors(corsOptions));
   app.use(express.json());
 
-app.use(express.json());
+
 app.use("/api",UserRoute);
+app.use("/api",courseRoute);
 module.exports = app;

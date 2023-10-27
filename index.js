@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const mongoString = 'mongodb+srv://muhammadadil7852:admin@cluster0.upckpgx.mongodb.net/';
 
+
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
