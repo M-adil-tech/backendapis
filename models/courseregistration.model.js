@@ -1,21 +1,27 @@
-// model.js
-
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-  courseId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  coursename: {
-    type: String,
-    required: true,
-  },
-  creditHours: {
-    type: Number,
-    required: true,
-  },
-});
+    courseId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    courseName: {
+        type: String,
+        required: [true , "Course Name can't be empty"],
+    },
+    creditHours: {
+        type: Number,
+        required: [true , "Course Hours is required"],
+    },
+    status: {
+        type: String,
+        enum: ['approved', 'pending'],
+        default: 'pending',
+    },
+},{timestamps:true});
 
-module.exports = mongoose.model('Course', courseSchema);
+const Course = mongoose.model('Course', courseSchema);
+
+module.exports = Course;
+

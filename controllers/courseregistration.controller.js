@@ -1,22 +1,45 @@
-const Course = require('../models/courseregistration.model'); 
+const Course = require('../models/courseregistration.model');
 
-// controller.js
+exports.registerCourse = async (req, res, next) => {
+    try {
+        const { courseId, courseName, creditHours, status } = req.body;
 
-exports.createCourse = async (req, res) => {
+        const newCourse = new Course({
+            courseId,
+            courseName,
+            creditHours,
+            status,
+        });
+
+        const savedCourse = await newCourse.save();
+
+        res.status(201).json({ status: true, course: savedCourse });
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getAllCourses = async (req, res, next) => {
   try {
-    const course = new Course(req.body);
-    await course.save();
-    res.status(201).json(course);
+      const courses = await Course.find(); // Retrieve all courses
+      res.status(200).json({ status: true, courses });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      next(error);
   }
 };
 
-exports.getCourses = async (req, res) => {
-  try {
-    const courses = await Course.find();
-    res.status(200).json(courses);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+exports.getCourseById = async (req, res, next) => {
+    try {
+        const courseId = req.params.courseId;
+        const course = await Course.findOne({ courseId });
+
+        if (!course) {
+            return res.status(404).json({ status: false, message: 'Course not found' });
+        }
+
+        res.status(200).json({ status: true, course });
+    } catch (error) {
+        next(error);
+    }
 };
+
