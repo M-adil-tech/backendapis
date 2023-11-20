@@ -38,7 +38,7 @@ exports.login = async (req, res, next) => {
             throw new Error(`Username or Password does not match`);
         }
 
-        // Creating Token
+        
 
         let tokenData;
         tokenData = { _id: user._id, email: user.email, role: user.role };
