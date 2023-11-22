@@ -16,6 +16,7 @@ const courseSchema = new Schema({
         required: [true, "courseID is required"],
         match: [/^CS-\d{3}$/, "Course ID format is not correct"],
         default: generateRandomCourseID,
+       
     },
 
     courseName: {
