@@ -16,12 +16,29 @@ exports.getCourses = async (req, res, next) => {
     try {
         const { userId } = req.params;
         let courseData = await courseServices.getCoursesByUserId(userId);
+
+        if (!courseData) {
+            return res.status(404).json({ status: false, error: 'No courses found for the specified user.' });
+        }
+
         res.json({ status: true, success: courseData });
     } catch (error) {
         console.error(error);
         next(error);
     }
 };
+
+
+// exports.getCourses = async (req, res, next) => {
+//     try {
+//         const { userId } = req.params;
+//         let courseData = await courseServices.getCoursesByUserId(userId);
+//         res.json({ status: true, success: courseData });
+//     } catch (error) {
+//         console.error(error);
+//         next(error);
+//     }
+// };
 
 exports.updateCourse = async (req, res, next) => {
     try {

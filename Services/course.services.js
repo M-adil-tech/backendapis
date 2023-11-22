@@ -10,7 +10,12 @@ class CourseService {
     }
 
     static async getCoursesByUserId(userId) {
-        return await CourseModel.find({ userId });
+        try {
+            const courses = await CourseModel.find({ userId });
+            return courses;
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async updateCourseStatus(userId, courseName, status) {
