@@ -56,6 +56,7 @@ class UserServices{
             throw error;
         }
     }
+    
     static async updateUserById(userId, updatedUserData) {
         try {
             const user = await UserModel.findByIdAndUpdate(userId, updatedUserData, {
