@@ -1,84 +1,60 @@
-// const bcrypt = require("bcrypt");
-// const mongoose = require('mongoose');
-// const { Schema } = mongoose;
-
-// function generateRandomCourseID() {
-//     const prefix = 'CS-';
-//     let randomDigits = Math.floor(100 + Math.random() * 900);
-//     let courseId = prefix + randomDigits;
-
-// }
-
-
-// const courseSchema = new Schema({
-//     CourseId: {
-//         type: String,
-//         required: [true, "courseID is required"],
-//         match: [/^CS-\d{3}$/, "Course ID format is not correct"],
-//         default: generateRandomCourseID,
-//     },
-
-//     courseName: {
-//         type: String,
-//         lowercase: true,
-//         required: [true, "course can't be empty"],
-//     },
-
-//     creditHourse:{
-//         type:String,
-//         required: [true , "credithourse can't be empty"]
-
-//     },
-//     section:{
-//         type:String,
-//         required: [true , "section can't be empty"]
-
-//     }
-// },{timestamps:true});
-
-// const courseModel = mongoose.model('course',courseSchema);
-// module.exports = courseModel;
-
-const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
+const { UserModel } = require('../models/user.model'); // Update the path accordingly
 const { Schema } = mongoose;
 
-function generateRandomCourseID() {
+function generateRandomCourseID(subjectCode) {
     const prefix = 'CS-';
-    let randomDigits = Math.floor(100 + Math.random() * 900);
-    return prefix + randomDigits;
+    return `${prefix}${subjectCode}`;
 }
 
 const courseSchema = new Schema({
-    CourseId: {
+    // userId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: UserModel, // Correctly reference the UserModel
+    //     required: true,
+    // },
+
+    subjectCode: {
         type: String,
-        required: [true, "Course ID is required"],
-        match: [/^CS-\d{3}$/, "Course ID format is not correct"],
-        default: generateRandomCourseID,
+        required: [true, "Subject code is required"],
+        unique: true,
     },
-    userId: {
+
+    courseId: {
         type: String,
-        required: [true, "User ID is required"],
+        required: true,
+        unique: true,
+        default: function () {
+            return generateRandomCourseID(this.subjectCode);
+        },
     },
+
     courseName: {
         type: String,
-        lowercase: true,
-        required: [true, "Course name can't be empty"],
+        uppercase: true,
+        required: true,
     },
+
     creditHours: {
-        type: String,
-        required: [true, "Credit hours can't be empty"],
+        type: Number,
+        required: true,
+        min: 1,
+        max: 9,
     },
+
     section: {
         type: String,
-        required: [true, "Section can't be empty"],
+        uppercase: true,
+        enum: ['A', 'B', 'C'],
+        required: true,
     },
+
     status: {
         type: String,
         enum: ['approved', 'pending'],
         default: 'pending',
-    }
+    },
 }, { timestamps: true });
 
-const CourseModel = mongoose.model('Course', courseSchema);
+const CourseModel = mongoose.model('course', courseSchema);
 module.exports = CourseModel;

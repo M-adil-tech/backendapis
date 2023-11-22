@@ -1,51 +1,43 @@
-
-// const courseModel = require("../models/course.model");
-
-// class courseService{
-//     static async createcourse(userId,courseName,CourseId,creditHourse,section){
-//             const coursedata= new courseModel({userId,courseName,CourseId,creditHourse,section});
-//             return await coursedata.save();
-//     }
-
-//     static async getcourse(userId){
-//         const courseList = await courseModel.find({userId})
-//         return courseList;
-//     }
-
-
-// }
-
-// module.exports = courseService;
-
-const courseModel = require("../models/course.model");
+const CourseModel = require("../models/course.model");
 
 class CourseService {
     static async createCourse(userId, courseName, creditHours, section) {
-        const coursedata = new courseModel({ userId, courseName, creditHours, section });
-        return await coursedata.save();
+        // Implement the logic to map courseName to subjectCode here
+        const subjectCode = this.getSubjectCodeFromCourseName(courseName);
+        
+        const courseData = new CourseModel({ userId, subjectCode, courseName, creditHours, section });
+        return await courseData.save();
     }
 
-    static async getCourseByUserId(userId) {
-        const courseList = await courseModel.find({ userId });
-        return courseList;
+    static async getCoursesByUserId(userId) {
+        return await CourseModel.find({ userId });
     }
 
-    static async getCourseByCourseId(courseId) {
-        return await courseModel.findOne({ CourseId: courseId });
+    static async updateCourseStatus(userId, courseName, status) {
+        return await CourseModel.findOneAndUpdate({ userId, courseName }, { status }, { new: true });
     }
 
-    static async updateCourse(courseId, updateData) {
-        return await courseModel.findOneAndUpdate(
-            { CourseId: courseId },
-            { $set: updateData },
-            { new: true }
-        );
+    static async deleteCourse(userId, courseId) {
+        return await CourseModel.findOneAndRemove({ userId, courseId });
     }
 
-    static async deleteCourse(courseId) {
-        return await courseModel.findOneAndDelete({ CourseId: courseId });
+    // Helper function to get subjectCode from courseName
+    static getSubjectCodeFromCourseName(courseName) {
+        // Basic example logic to map courseName to subjectCode
+        switch (courseName.toLowerCase()) {
+            case 'english':
+                return '111';
+            case 'physics':
+                return '212';
+            case 'math':
+                return '333';
+            case 'chemistry':
+                return '484';
+            // Add more cases as needed
+            default:
+                return '';
+        }
     }
 }
 
 module.exports = CourseService;
-
