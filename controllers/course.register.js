@@ -1,24 +1,63 @@
-const courseServices = require('../Services/course.services')
+const courseServices = require('../Services/course.services.js');
+const userServices = require('../Services/user.services.js')
 
-exports.registerCourse =  async (req,res,next)=>{
+exports.registerCourse = async (req, res, next) => {
     try {
-        const { userId,courseName,CourseId,creditHourse,section} = req.body;
-        let courseData = await courseServices.createcourse(userId,courseName,CourseId,creditHourse,section);
-        res.json({status: true,success:courseData});
+        const { userId, courseName, creditHours, section } = req.body;
+        let courseData = await courseServices.createCourse(userId, courseName, creditHours, section);
+        res.json({ status: true, success: courseData });
     } catch (error) {
-        console.log(error, 'err---->');
+        console.error(error);
         next(error);
     }
-}
+};
 
-exports.getregisterCourse =  async (req,res,next)=>{
+exports.getCourses = async (req, res, next) => {
     try {
-        const { CourseId } = req.body;
-        let courseData = await courseServices.getregisterCourse(CourseId);
-        res.json({status: true,success:courseData});
+        const { userId } = req.params;
+        let courseData = await courseServices.getCoursesByUserId(userId);
+
+        if (!courseData) {
+            return res.status(404).json({ status: false, error: 'No courses found for the specified user.' });
+        }
+
+        res.json({ status: true, success: courseData });
     } catch (error) {
-        console.log(error, 'err---->');
+        console.error(error);
         next(error);
     }
-}
+};
 
+
+// exports.getCourses = async (req, res, next) => {
+//     try {
+//         const { userId } = req.params;
+//         let courseData = await courseServices.getCoursesByUserId(userId);
+//         res.json({ status: true, success: courseData });
+//     } catch (error) {
+//         console.error(error);
+//         next(error);
+//     }
+// };
+
+exports.updateCourse = async (req, res, next) => {
+    try {
+        const { courseId, status } = req.body;
+        let updatedCourse = await courseServices.updateCourseStatus(courseId, status);
+        res.json({ status: true, success: updatedCourse });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+exports.deleteCourse = async (req, res, next) => {
+    try {
+        const { courseId } = req.params;
+        let deletedCourse = await courseServices.deleteCourse(courseId);
+        res.json({ status: true, success: deletedCourse });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};

@@ -4,7 +4,6 @@ const UserRoute = require("./Routes/user.routes");
 const courseRoute = require("./Routes/course.register");
 const taskAssign=require("./Routes/taskAssignRoute");
 
-
 const cors = require('cors');
 
 const app = express();
