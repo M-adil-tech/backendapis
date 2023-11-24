@@ -1,3 +1,4 @@
+const mongoose = require('mongoose'); 
 const UserModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
@@ -41,10 +42,10 @@ class UserServices{
     static async getUserById(userId) {
         try {
             return await UserModel.findById(userId);
-        } catch (error) {
+         } catch (error) {
             throw error;
+         }
         }
-    }
     static async getUserRoleById(userId) {
         try {
             const user = await UserModel.findById(userId);

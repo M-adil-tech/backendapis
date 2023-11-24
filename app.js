@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser")
 const UserRoute = require("./Routes/user.routes");
 const courseRoute = require("./Routes/course.register");
+const taskAssign=require("./Routes/taskAssignRoute");
 
 
 const cors = require('cors');
@@ -20,4 +21,5 @@ const corsOptions = {
 
 app.use("/api",UserRoute);
 app.use("/api",courseRoute);
+app.use("/api",taskAssign);
 module.exports = app;
