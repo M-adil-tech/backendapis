@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { UserModel } = require('../models/user.model'); // Update the path accordingly
+const { UserModel } = require('../models/user.model'); 
 const { Schema } = mongoose;
 
 function generateRandomCourseID(subjectCode) {
