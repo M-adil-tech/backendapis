@@ -1,6 +1,5 @@
-// services/taskAssignService.js
 const mongoose = require('mongoose');
-//const { ObjectId } = mongoose.Types;
+const { ObjectId } = mongoose.Types;
 const TaskAssignModel = require("../models/taskAssignModel");
 
 class TaskAssignService {
@@ -22,25 +21,33 @@ class TaskAssignService {
     }
   }
  //get all user having Task  
- static async getAllTasks() {
+ static async getAllTasksa(userId) {
   try {
-    const allTasks = await TaskAssignModel.find();
-    return allTasks;
+    return await TaskAssignModel.find();
   } catch (err) {
     throw err;
   }
 }
-  static async editTaskAssignment(taskAssignId, updatedTask) {
-    try {
-      return await TaskAssignModel.findByIdAndUpdate(
-        taskAssignId,
-        { $set: updatedTask },
-        { new: true }
-      ).populate('UserId');
-    } catch (err) {
-      throw err;
-    }
+
+// static async getAllTasks() {
+//   try {
+//     return await TaskAssignModel.find({}).populate('UserId');
+//   } catch (err) {
+//     throw err;
+//   }
+// }
+// //edit task 
+static async editTaskById(taskAssignId, updatedTask) {
+  try {
+    return await TaskAssignModel.findByIdAndUpdate(
+      taskAssignId,
+      { $set: updatedTask },
+      { new: true }
+    ).populate('UserId');
+  } catch (err) {
+    throw err;
   }
+}
 }
 
 module.exports = TaskAssignService;

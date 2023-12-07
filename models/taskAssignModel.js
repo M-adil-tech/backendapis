@@ -1,5 +1,6 @@
 // models/taskAssign.model.js
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 const UserModel = require('./user.model'); // Adjust the path as needed
 
 const taskAssignSchema = new mongoose.Schema({

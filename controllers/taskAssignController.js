@@ -23,11 +23,14 @@ class TaskAssignController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-  //Controller for All the user having Task Assign
+  //Controller for get all tesk 
   static async getAllTasks(req, res) {
     try {
-      const allTasks = await TaskAssignService.getAllTasks();
-      res.json(allTasks);
+      console.log(req)
+      const userId = req.params.userId;
+      const allTasks = await TaskAssignService.getAllTasksa(userId);
+      console.log(allTasks)
+      res.status(200).json({ status: true, tasks: allTasks });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -35,9 +38,10 @@ class TaskAssignController {
   }
   static async editTaskAssignment(req, res) {
     const { taskAssignId } = req.params;
-    const updatedTask = req.body;
+    const { Task } = req.body; // Updated line
+
     try {
-      const updatedTaskAssign = await TaskAssignService.editTaskAssignment(taskAssignId, updatedTask);
+      const updatedTaskAssign = await TaskAssignService.editTaskAssignment(taskAssignId, { Task });
       res.json(updatedTaskAssign);
     } catch (error) {
       console.error(error);
